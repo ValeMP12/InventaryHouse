@@ -1,0 +1,26 @@
+{
+  "name": "inventoryhouse",
+  "version": "1.0.0",
+  "description": "Proyecto para administrar un sistema de punto de venta ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "node",
+    "quasar",
+    "vue",
+    "html",
+    "javascript",
+    "express",
+    "nodemon"
+  ],
+  "author": "Valeria Preciado",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  }
+}
