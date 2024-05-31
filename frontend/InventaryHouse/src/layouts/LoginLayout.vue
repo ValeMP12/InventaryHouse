@@ -12,7 +12,7 @@
             <q-form @submit.prevent="onSubmit">
               <q-input v-model="username" label="Usuario" outlined class="q-mb-md" />
               <q-input v-model="password" type="password" label="Contraseña" outlined class="q-mb-md" />
-              <q-btn type="submit" label="Entrar" color="pink" class="full-width q-mt-md" />
+              <q-btn  type="submit" label="Entrar" color="pink" class="full-width q-mt-md" />
             </q-form>
           </q-card-section>
         </q-card>
@@ -31,10 +31,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      const router = useRouter();
       // Aquí va tu lógica de inicio de sesión
       console.log('Usuario:', this.username);
       console.log('Contraseña:', this.password);
       // Añade aquí la lógica de autenticación
+      router.push('/menuPrincipal');
     }
   }
 }
