@@ -17,6 +17,12 @@
 
 <script>
 export default {
+  name: 'MenuPrincipal'
+}
+</script>
+
+<!-- <script>
+export default {
   data() {
     return {
       menuItems: [
@@ -38,7 +44,7 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
 <style scoped>
 .menu-page {
