@@ -4,6 +4,7 @@ import { inventarioController } from "../controllers/inventarioController.js";
 import { proveedoresController } from "../controllers/proveedoresController.js";
 import { productosController } from "../controllers/productosController.js";
 import { usuariosController } from "../controllers/usuariosController.js";
+import { categoriaController } from "../controllers/categoriaController.js";
 
 const router = new Router();
 
@@ -41,5 +42,15 @@ router.get('/usuarios/:id', usuariosController.getUsuariosId);
 router.post('/usuarios/', usuariosController.createUsuario);
 router.put('/usuarios/:id', usuariosController.updateUsuario);
 router.delete('/usuarios/:id', usuariosController.deleteUsuario);
+
+
+
+// Rutas para Categoria
+router.get('/categoria/', categoriaController.getAll);
+router.get('/categoria/:id', categoriaController.getcategoriaId);
+router.post('/categoria/', categoriaController.createcategoria);
+router.put('/categoria/:id', categoriaController.updatecategoria);
+router.delete('/categoria/:id', categoriaController.deletecategoria);
+
 
 export default router;

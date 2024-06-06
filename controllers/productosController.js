@@ -1,19 +1,19 @@
 import { productosModel } from "../models/productosModel.js";
 
-const getAll = async (req,res) => {
+const getAll = async (req, res) => {
     try {
         const response = await productosModel.findAll();
         res.json(response);
     } catch (error) {
         console.log(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
-// Controlador para buscar un producto por su ID
 const getProductosId = async (req, res) => {
     const { id } = req.params;
     try {
-        const productos = await productosModel.getproductosById(id);
+        const productos = await productosModel.getProductosById(id);
         if (productos) {
             res.json(productos);
         } else {
@@ -26,9 +26,33 @@ const getProductosId = async (req, res) => {
 };
 
 const createProducto = async (req, res) => {
-    const {id_producto, cant, Codigo_id, producto, id_prov,categoria,precio_unit,precio_vent } = req.body;
+    const { Cant, Codigo, Producto, Id_prov, Categoria, precio_unit, precio_vent } = req.body;
+    
+    // Validaciones básicas
+    if (!Number.isInteger(Cant) || Cant < 0) {
+        return res.status(400).json({ message: 'Cantidad inválida' });
+    }
+    if (typeof Codigo !== 'string' || Codigo.trim() === '') {
+        return res.status(400).json({ message: 'Código inválido' });
+    }
+    if (typeof Producto !== 'string' || Producto.trim() === '') {
+        return res.status(400).json({ message: 'Producto inválido' });
+    }
+    if (!Number.isInteger(Id_prov) || Id_prov < 0) {
+        return res.status(400).json({ message: 'Proveedor inválido' });
+    }
+    if (typeof Categoria !== 'string' || Categoria.trim() === '') {
+        return res.status(400).json({ message: 'Categoría inválida' });
+    }
+    if (typeof precio_unit !== 'number' || precio_unit <= 0) {
+        return res.status(400).json({ message: 'Precio unitario inválido' });
+    }
+    if (typeof precio_vent !== 'number' || precio_vent <= 0) {
+        return res.status(400).json({ message: 'Precio de venta inválido' });
+    }
+
     try {
-        const newProducto = await productosModel.createProducto(id_producto, cant, Codigo_id, producto, id_prov,categoria,precio_unit,precio_vent );
+        const newProducto = await productosModel.createProducto(Cant, Codigo, Producto, Id_prov, Categoria, precio_unit, precio_vent);
         res.status(201).json(newProducto);
     } catch (error) {
         console.error('Error al registrar el producto:', error);
@@ -38,11 +62,35 @@ const createProducto = async (req, res) => {
 
 const updateProducto = async (req, res) => {
     const { id } = req.params;
-    const { id_producto, cant, Codigo_id, producto, id_prov,categoria,precio_unit,precio_vent } = req.body;
+    const { Cant, Codigo, Producto, Id_prov, Categoria, precio_unit, precio_vent } = req.body;
+
+    // Validaciones básicas
+    if (!Number.isInteger(Cant) || Cant < 0) {
+        return res.status(400).json({ message: 'Cantidad inválida' });
+    }
+    if (typeof Codigo !== 'string' || Codigo.trim() === '') {
+        return res.status(400).json({ message: 'Código inválido' });
+    }
+    if (typeof Producto !== 'string' || Producto.trim() === '') {
+        return res.status(400).json({ message: 'Producto inválido' });
+    }
+    if (!Number.isInteger(Id_prov) || Id_prov < 0) {
+        return res.status(400).json({ message: 'Proveedor inválido' });
+    }
+    if (typeof Categoria !== 'string' || Categoria.trim() === '') {
+        return res.status(400).json({ message: 'Categoría inválida' });
+    }
+    if (typeof precio_unit !== 'number' || precio_unit <= 0) {
+        return res.status(400).json({ message: 'Precio unitario inválido' });
+    }
+    if (typeof precio_vent !== 'number' || precio_vent <= 0) {
+        return res.status(400).json({ message: 'Precio de venta inválido' });
+    }
+
     try {
-        const updateProducto = await productosModel.updateProducto(id_producto, cant, Codigo_id, producto, id_prov,categoria,precio_unit,precio_vent);
-        if (updateProducto) {
-            res.json(updateProducto);
+        const updatedProducto = await productosModel.updateProducto(id, Cant, Codigo, Producto, Id_prov, Categoria, precio_unit, precio_vent);
+        if (updatedProducto) {
+            res.json(updatedProducto);
         } else {
             res.status(404).json({ message: 'Producto no encontrado' });
         }
@@ -55,8 +103,8 @@ const updateProducto = async (req, res) => {
 const deleteProducto = async (req, res) => {
     const { id } = req.params;
     try {
-        const deleteProducto = await productosModel.deleteProducto(id);
-        if (deleteProducto) {
+        const deletedProducto = await productosModel.deleteProducto(id);
+        if (deletedProducto) {
             res.json({ message: 'Producto eliminado correctamente' });
         } else {
             res.status(404).json({ message: 'Producto no encontrado' });
@@ -67,7 +115,6 @@ const deleteProducto = async (req, res) => {
     }
 };
 
-// Controlador para buscar un proveedor de un producto por su ID
 const getProveedorByIdProducto = async (req, res) => {
     const { id } = req.params;
     try {

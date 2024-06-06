@@ -53,7 +53,7 @@ const deleteInventario = async (id) => {
 // Función para mostrar el producto de un inventario
 const getProductoByIdInventario = async (id) => {
     try {
-        const query = 'SELECT d.nombre, e.id_inventario FROM producto e INNER JOIN producto d ON d.id_inventario = e.id_inventario WHERE e.id_inventario = $1';
+        const query = 'SELECT d.nombre, e.id_inventario FROM producto e INNER JOIN producto d ON d.id_producto = e.id_producto WHERE e.id_inventario = $1';
         const values = [id];
         const result = await pool.query(query, values);
         return result.rows[0];

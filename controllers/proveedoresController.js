@@ -1,11 +1,12 @@
 import { proveedoresModel } from "../models/proveedoresModel.js";
 
-const getAll = async (req,res) => {
+const getAll = async (req, res) => {
     try {
         const response = await proveedoresModel.findAll();
         res.json(response);
     } catch (error) {
         console.log(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
@@ -13,7 +14,7 @@ const getAll = async (req,res) => {
 const getProveedoresId = async (req, res) => {
     const { id } = req.params;
     try {
-        const proveedor = await proveedoresModel.getProveedoresById(id);
+        const proveedor = await proveedoresModel.getProveedorById(id);
         if (proveedor) {
             res.json(proveedor);
         } else {
@@ -26,9 +27,9 @@ const getProveedoresId = async (req, res) => {
 };
 
 const createProveedor = async (req, res) => {
-    const {id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion } = req.body;
+    const { nom_empresa, nom_proveedor, dias, telefono, direccion } = req.body;
     try {
-        const newProveedor = await proveedoresModel.createProveedor(id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion );
+        const newProveedor = await proveedoresModel.createProveedor(nom_empresa, nom_proveedor, dias, telefono, direccion);
         res.status(201).json(newProveedor);
     } catch (error) {
         console.error('Error al registrar el proveedor:', error);
@@ -38,9 +39,9 @@ const createProveedor = async (req, res) => {
 
 const updateProveedor = async (req, res) => {
     const { id } = req.params;
-    const {id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion} = req.body;
+    const { nom_empresa, nom_proveedor, dias, telefono, direccion } = req.body;
     try {
-        const updateProveedor = await proveedoresModel.updateProveedor(id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion);
+        const updateProveedor = await proveedoresModel.updateProveedor(id, nom_empresa, nom_proveedor, dias, telefono, direccion);
         if (updateProveedor) {
             res.json(updateProveedor);
         } else {
@@ -62,7 +63,7 @@ const deleteProveedor = async (req, res) => {
             res.status(404).json({ message: 'Proveedor no encontrado' });
         }
     } catch (error) {
-        console.error('Error al eliminar Proveedor por ID:', error);
+        console.error('Error al eliminar proveedor por ID:', error);
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };

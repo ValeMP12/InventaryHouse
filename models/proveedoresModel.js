@@ -5,22 +5,11 @@ const findAll = async () => {
     return rows;
 };
 
-// Función para buscar un producto por su ID
-const getProveedoresById = async (id) => {
+// Función para buscar un proveedor por su ID
+const getProveedorById = async (id) => {
     try {
-        const query = 'SELECT * FROM proveedores WHERE c=id_proveedor = $1';
+        const query = 'SELECT * FROM proveedor WHERE id_proveedor = $1';
         const values = [id];
-        const result = await pool.query(query, values);
-        return result.rows[0];
-     } catch (error){
-        throw error;
-     } 
-};
-
-const createProveedor = async (id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion) => {
-    try {
-        const query = 'INSERT INTO producto (id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion) VALUES ($1, $2, $3, $4, $5, $6, ) RETURNING *';
-        const values = [id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -28,10 +17,21 @@ const createProveedor = async (id_proveedor, Nom_empresa, Nom_proveedor, Dias, T
     }
 };
 
-const updateProveedor = async (id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion) => {
+const createProveedor = async (nom_empresa, nom_proveedor, dias, telefono, direccion) => {
     try {
-        const query = 'UPDATE proveedor SET  Nom_empresa = $1, Nom_proveedor = $2 , dias = $3 , telefono =$4, direccion =$5,  WHERE id_producto = $6 RETURNING *';
-        const values = [id_proveedor, Nom_empresa, Nom_proveedor, Dias, Telefono, Direccion];
+        const query = 'INSERT INTO proveedor (nom_empresa, nom_proveedor, dias, telefono, direccion) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+        const values = [nom_empresa, nom_proveedor, dias, telefono, direccion];
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
+const updateProveedor = async (id_proveedor, nom_empresa, nom_proveedor, dias, telefono, direccion) => {
+    try {
+        const query = 'UPDATE proveedor SET nom_empresa = $1, nom_proveedor = $2, dias = $3, telefono = $4, direccion = $5 WHERE id_proveedor = $6 RETURNING *';
+        const values = [nom_empresa, nom_proveedor, dias, telefono, direccion, id_proveedor];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -53,18 +53,18 @@ const deleteProveedor = async (id) => {
 // Función para mostrar el producto de un proveedor
 const getProductoByIdProveedor = async (id) => {
     try {
-        const query = 'SELECT d.nombre,e.id_proveedor FROM producto e INNER JOIN proveedor d ON d.id_producto = e.id_producto WHERE id_proveedor = $1';
+        const query = 'SELECT p.nombre, pr.id_proveedor FROM producto pr INNER JOIN proveedor p ON p.id_proveedor = pr.id_prov WHERE p.id_proveedor = $1';
         const values = [id];
         const result = await pool.query(query, values);
         return result.rows[0];
-     } catch (error){
+    } catch (error) {
         throw error;
-     } 
+    }
 };
 
 export const proveedoresModel = {
     findAll, 
-    getProveedoresById,
+    getProveedorById,
     createProveedor, 
     updateProveedor,
     deleteProveedor,

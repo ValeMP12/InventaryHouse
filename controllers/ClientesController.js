@@ -1,11 +1,12 @@
 import { ClientesModel } from "../models/ClientesModel.js";
 
-const getAll = async (req,res) => {
+const getAll = async (req, res) => {
     try {
         const response = await ClientesModel.findAll();
         res.json(response);
     } catch (error) {
         console.log(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 
@@ -26,9 +27,9 @@ const getClienteId = async (req, res) => {
 };
 
 const createCliente = async (req, res) => {
-    const { id_Cliente, Codigo, existencia, producto, empresa } = req.body;
+    const { nombre, fecha_pago, saldo } = req.body;
     try {
-        const newCliente = await ClientesModel.createCliente(id_Cliente, Codigo, existencia, producto, empresa );
+        const newCliente = await ClientesModel.createCliente(nombre, fecha_pago, saldo);
         res.status(201).json(newCliente);
     } catch (error) {
         console.error('Error al registrar el cliente:', error);
@@ -38,11 +39,11 @@ const createCliente = async (req, res) => {
 
 const updateCliente = async (req, res) => {
     const { id } = req.params;
-    const { id_Cliente, Codigo, existencia, producto, empresa } = req.body;
+    const { nombre, fecha_pago, saldo } = req.body;
     try {
-        const updateCliente = await ClientesModel.updateCliente(id_Cliente, Codigo, existencia, producto, empresa);
-        if (updateCliente) {
-            res.json(updateCliente);
+        const updatedCliente = await ClientesModel.updateCliente(id, nombre, fecha_pago, saldo);
+        if (updatedCliente) {
+            res.json(updatedCliente);
         } else {
             res.status(404).json({ message: 'Cliente no encontrado' });
         }
@@ -55,14 +56,14 @@ const updateCliente = async (req, res) => {
 const deleteCliente = async (req, res) => {
     const { id } = req.params;
     try {
-        const deleteCliente = await ClientesModel.deleteCliente(id);
-        if (deleteCliente) {
+        const deletedCliente = await ClientesModel.deleteCliente(id);
+        if (deletedCliente) {
             res.json({ message: 'Cliente eliminado correctamente' });
         } else {
             res.status(404).json({ message: 'Cliente no encontrado' });
         }
     } catch (error) {
-        console.error('Error al eliminar Cliente por ID:', error);
+        console.error('Error al eliminar cliente por ID:', error);
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
@@ -85,9 +86,9 @@ const getProductoByIdCliente = async (req, res) => {
 
 export const ClientesController = {
     getAll,
-    getClienteId, 
+    getClienteId,
     createCliente,
     updateCliente,
     deleteCliente,
-    getProductoByIdCliente
+    getProductoByIdCliente,
 };

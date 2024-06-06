@@ -1,6 +1,6 @@
 import { usuariosModel } from "../models/usuariosModel.js";
 
-const getAll = async (req,res) => {
+const getAll = async (req, res) => {
     try {
         const response = await usuariosModel.findAll();
         res.json(response);
@@ -26,9 +26,9 @@ const getUsuariosId = async (req, res) => {
 };
 
 const createUsuario = async (req, res) => {
-    const {id_usuario, nombre, cargo, horario, turno, telefono } = req.body;
+    const { nombre, cargo, horario, turno, telefono } = req.body;
     try {
-        const newUsuario = await usuariosModel.createProveedor(id_usuario, nombre, cargo, horario, turno, telefono );
+        const newUsuario = await usuariosModel.createUsuario(nombre, cargo, horario, turno, telefono);
         res.status(201).json(newUsuario);
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
@@ -38,9 +38,9 @@ const createUsuario = async (req, res) => {
 
 const updateUsuario = async (req, res) => {
     const { id } = req.params;
-    const {id_usuario, nombre, cargo, horario, turno, telefono} = req.body;
+    const { nombre, cargo, horario, turno, telefono } = req.body;
     try {
-        const updateUsuario = await usuariosModel.updateUsuario(id_usuario, nombre, cargo, horario, turno, telefono);
+        const updateUsuario = await usuariosModel.updateUsuario(id, nombre, cargo, horario, turno, telefono);
         if (updateUsuario) {
             res.json(updateUsuario);
         } else {
@@ -57,7 +57,7 @@ const deleteUsuario = async (req, res) => {
     try {
         const deleteUsuario = await usuariosModel.deleteUsuario(id);
         if (deleteUsuario) {
-            res.json({ message: 'usuario eliminado correctamente' });
+            res.json({ message: 'Usuario eliminado correctamente' });
         } else {
             res.status(404).json({ message: 'Usuario no encontrado' });
         }
@@ -71,7 +71,7 @@ const deleteUsuario = async (req, res) => {
 const getCargoByIdUsuario = async (req, res) => {
     const { id } = req.params;
     try {
-        const proveedor = await usuariosModel.getCargoByIdUsuario(id);
+        const usuario = await usuariosModel.getCargoByIdUsuario(id);
         if (usuario) {
             res.json(usuario);
         } else {

@@ -1,26 +1,15 @@
 import { pool } from "../database/connection.js";
 
 const findAll = async () => {
-    const { rows } = await pool.query("SELECT * FROM cliente ORDER BY id_cliente ASC");
+    const { rows } = await pool.query("SELECT * FROM clientes ORDER BY id_clientes ASC");
     return rows;
 };
 
 // Función para buscar un cliente por su ID
 const getClienteById = async (id) => {
     try {
-        const query = 'SELECT * FROM cliente WHERE id_cliente = $1';
+        const query = 'SELECT * FROM clientes WHERE id_clientes = $1';
         const values = [id];
-        const result = await pool.query(query, values);
-        return result.rows[0];
-     } catch (error){
-        throw error;
-     } 
-};
-
-const createCliente = async (id_Cliente, codigo, existencia, producto, empresa) => {
-    try {
-        const query = 'INSERT INTO empleado (id_Cliente, Codigo, existencia, producto, empresa) VALUES ($1, $2, $3,$4,$5) RETURNING *';
-        const values = [id_Cliente, codigo, existencia, producto, empresa];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -28,10 +17,21 @@ const createCliente = async (id_Cliente, codigo, existencia, producto, empresa) 
     }
 };
 
-const updateCliente = async (id_Cliente, codigo, existencia, producto, empresa) => {
+const createCliente = async (nombre, fecha_pago, saldo) => {
     try {
-        const query = 'UPDATE cliente SET Codigo = $1, existencia = $2, producto = $3 , empresa = $4 WHERE id_cliente = $5 RETURNING *';
-        const values = [codigo, existencia, producto, empresa];
+        const query = 'INSERT INTO clientes (nombre, fecha_pago, saldo) VALUES ($1, $2, $3) RETURNING *';
+        const values = [nombre, fecha_pago, saldo];
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
+const updateCliente = async (id_clientes, nombre, fecha_pago, saldo) => {
+    try {
+        const query = 'UPDATE clientes SET nombre = $1, fecha_pago = $2, saldo = $3 WHERE id_clientes = $4 RETURNING *';
+        const values = [nombre, fecha_pago, saldo, id_clientes];
         const result = await pool.query(query, values);
         return result.rows[0];
     } catch (error) {
@@ -41,7 +41,7 @@ const updateCliente = async (id_Cliente, codigo, existencia, producto, empresa) 
 
 const deleteCliente = async (id) => {
     try {
-        const query = 'DELETE FROM cliente WHERE id_cliente = $1 RETURNING *';
+        const query = 'DELETE FROM clientes WHERE id_clientes = $1 RETURNING *';
         const values = [id];
         const result = await pool.query(query, values);
         return result.rows[0];
@@ -53,19 +53,19 @@ const deleteCliente = async (id) => {
 // Función para mostrar los productos de un cliente
 const getProductoByIdCliente = async (id) => {
     try {
-        const query = 'SELECT d.nombre,e.id_cliente FROM cliente e INNER JOIN producto d ON d.id_producto = e.id_producto WHERE id_cliente = $1';
+        const query = 'SELECT p.nombre, c.id_clientes FROM producto p INNER JOIN clientes c ON p.id_cliente = c.id_clientes WHERE c.id_clientes = $1';
         const values = [id];
         const result = await pool.query(query, values);
         return result.rows[0];
-     } catch (error){
+    } catch (error) {
         throw error;
-     } 
+    }
 };
 
 export const ClientesModel = {
-    findAll, 
+    findAll,
     getClienteById,
-    createCliente, 
+    createCliente,
     updateCliente,
     deleteCliente,
     getProductoByIdCliente,
