@@ -47,10 +47,10 @@ router.delete('/usuarios/:id', usuariosController.deleteUsuario);
 
 // Rutas para Categoria
 router.get('/categoria/', categoriaController.getAll);
-router.get('/categoria/:id', categoriaController.getcategoriaId);
-router.post('/categoria/', categoriaController.createcategoria);
-router.put('/categoria/:id', categoriaController.updatecategoria);
-router.delete('/categoria/:id', categoriaController.deletecategoria);
+router.get('/categoria/:id', categoriaController.getCategoriaById);
+router.post('/categoria/', categoriaController.createCategoria);
+router.put('/categoria/:id', categoriaController.updateCategoria);
+router.delete('/categoria/:id', categoriaController.deleteCategoria);
 
 
 export default router;
