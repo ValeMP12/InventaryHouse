@@ -6,7 +6,7 @@ const routes = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'categoria', component: () => import('pages/Categoria/IndexCategoria.vue') },
       { path: 'createCategoria', component: () => import('pages/Categoria/createCategoria.vue') },
-      { path: 'updateCategoria/:id', component: () => import('pages/Categoria/updateCategoria.vue') }
+      { path: 'updateCategoria/:id', name: 'updateCategoria', component: () => import('pages/Categoria/updateCategoria.vue') }
     ]
   },
 
@@ -16,6 +16,6 @@ const routes = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
-]
+];
 
-export default routes
+export default routes;
