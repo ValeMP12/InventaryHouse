@@ -9,6 +9,9 @@ const routes = [
       { path: 'puntoventa', component: () => import('src/pages/PuntoVenta.vue') },
       { path: 'cortecaja', component: () => import('src/pages/CorteCaja.vue') },
       { path: 'producto', component: () => import('src/pages/Productos.vue') },
+      { path: 'proveedores', component: () => import('src/pages/ProveedoresPage.vue') },
+      { path: 'usuarios', component: () => import('src/pages/UsuariosPage.vue') },
+      { path: 'clientes', component: () => import('src/pages/ClientesPage.vue') }
     ]
   },
 
